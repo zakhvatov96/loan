@@ -2,6 +2,59 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./src/js/modules/playVideo.js"
+/*!*************************************!*\
+  !*** ./src/js/modules/playVideo.js ***!
+  \*************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ PlayVideo)
+/* harmony export */ });
+class PlayVideo {
+  constructor(triggers, overlay) {
+    this.triggers = document.querySelectorAll(triggers), this.overlay = document.querySelector(overlay), this.close = this.overlay.querySelector('.close');
+  }
+  bindTriggers() {
+    this.triggers.forEach(item => {
+      item.addEventListener('click', () => {
+        const path = item.getAttribute('data-url');
+        this.createVideoPlayer(path);
+      });
+    });
+  }
+  bindCloseTrigger() {
+    this.close.addEventListener('click', () => {
+      this.overlay.style.display = 'none';
+      this.player.stopVideo();
+    });
+  }
+  createVideoPlayer(url) {
+    if (!this.player) {
+      this.player = new YT.Player('frame', {
+        height: '100%',
+        width: '100%',
+        videoId: `${url}`,
+        playerVars: {
+          'playsinline': 1
+        }
+      });
+    }
+    this.overlay.style.display = 'flex';
+  }
+  init() {
+    const tag = document.createElement('script');
+    tag.src = "http://www.youtube.com/iframe_api";
+    const firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    this.bindTriggers();
+    this.bindCloseTrigger();
+  }
+}
+
+/***/ },
+
 /***/ "./src/js/modules/slider.js"
 /*!**********************************!*\
   !*** ./src/js/modules/slider.js ***!
@@ -14,7 +67,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 class Slider {
   constructor(page, btns) {
-    this.page = document.querySelector(page), this.slides = Array.from(this.page.children), this.btns = document.querySelectorAll(btns), this.slideIndex = 1;
+    this.page = document.querySelector(page), this.slides = Array.from(this.page.children), this.btns = document.querySelectorAll(btns), this.hanson = document.querySelector('.hanson'), this.slideIndex = 1;
   }
   showSlides(n) {
     if (n < 1) {
@@ -23,10 +76,17 @@ class Slider {
     if (n > this.slides.length) {
       this.slideIndex = 1;
     }
+    this.hanson.style.display = 'none';
+    this.hanson.classList.add('animated', 'fadeInUp');
     this.slides.forEach(slide => {
       slide.style.display = 'none';
       slide.classList.add('animated');
     });
+    if (this.slideIndex === 3) {
+      setTimeout(() => {
+        this.hanson.style.display = 'block';
+      }, 3000);
+    }
     this.slides[this.slideIndex - 1].style.display = 'block';
   }
   plusSlides(n) {
@@ -119,10 +179,14 @@ var __webpack_exports__ = {};
   \************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_slider__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/slider */ "./src/js/modules/slider.js");
+/* harmony import */ var _modules_playVideo__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/playVideo */ "./src/js/modules/playVideo.js");
+
 
 window.addEventListener('DOMContentLoaded', () => {
   const slider = new _modules_slider__WEBPACK_IMPORTED_MODULE_0__["default"]('.page', '.next');
   slider.render();
+  const playVideo = new _modules_playVideo__WEBPACK_IMPORTED_MODULE_1__["default"]('.showup .play', '.overlay');
+  playVideo.init();
 });
 })();
 
