@@ -1,13 +1,11 @@
-export default class Slider {
-	constructor(page, btns) {
-		this.page = document.querySelector(page),
-		this.slides = Array.from(this.page.children),
-		this.btns = document.querySelectorAll(btns),
-		this.hanson = document.querySelector('.hanson'),
-		this.slideIndex = 1;
+import Slider from "./slider";
+
+export default class MainSlider extends Slider {
+	constructor(btns) {
+		super(btns);
 	}
 
-	showSlides(n) {
+		showSlides(n) {
 		if(n < 1) {
 			this.slideIndex = this.slides.length;
 		}
@@ -19,7 +17,7 @@ export default class Slider {
 		this.hanson.style.display = 'none';
 		this.hanson.classList.add('animated', 'fadeInUp');
 
-		this.slides.forEach(slide => {
+		Array.from(this.slides).forEach(slide => {
 			slide.style.display = 'none';
 			slide.classList.add('animated');
 		});
