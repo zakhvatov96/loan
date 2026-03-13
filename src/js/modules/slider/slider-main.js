@@ -37,7 +37,8 @@ export default class MainSlider extends Slider {
 
 
 	render() {
-		this.btns.forEach(btn => {
+		try {
+			this.btns.forEach(btn => {
 			btn.addEventListener('click', () => {
 				this.plusSlides(1);
 			})
@@ -50,5 +51,6 @@ export default class MainSlider extends Slider {
 		})
 
 		this.showSlides(this.slideIndex);
+		} catch(e){}
 	}
 }
