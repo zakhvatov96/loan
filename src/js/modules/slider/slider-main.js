@@ -14,8 +14,10 @@ export default class MainSlider extends Slider {
 			this.slideIndex = 1;
 		}
 
-		this.hanson.style.display = 'none';
-		this.hanson.classList.add('animated', 'fadeInUp');
+		try {
+			this.hanson.style.display = 'none';
+			this.hanson.classList.add('animated', 'fadeInUp');
+		} catch(e){}
 
 		Array.from(this.slides).forEach(slide => {
 			slide.style.display = 'none';
@@ -24,7 +26,9 @@ export default class MainSlider extends Slider {
 
 		if(this.slideIndex === 3) {
 			setTimeout(() => {
-				this.hanson.style.display = 'block';
+				try {
+					this.hanson.style.display = 'block';
+				} catch(e){}
 			}, 3000)
 		}
 
@@ -35,10 +39,8 @@ export default class MainSlider extends Slider {
 		this.showSlides(this.slideIndex += n);
 	}
 
-
-	render() {
-		try {
-			this.btns.forEach(btn => {
+	bindTriggers() {
+		this.btns.forEach(btn => {
 			btn.addEventListener('click', () => {
 				this.plusSlides(1);
 			})
@@ -49,8 +51,28 @@ export default class MainSlider extends Slider {
 				this.showSlides(this.slideIndex);
 			})
 		})
+		this.prevModule.forEach(item => {
+			item.addEventListener('click', (e) => {
+				e.preventDefault();
+				e.stopPropagation();
+				this.plusSlides(-1);
+			})
+		});
 
+		this.nextModule.forEach(item => {
+			item.addEventListener('click', (e) => {
+				e.preventDefault();
+				e.stopPropagation();
+				this.plusSlides(1);
+			})
+		})
+	}
+
+
+	render() {
+		if(this.container) {			
 		this.showSlides(this.slideIndex);
-		} catch(e){}
+		this.bindTriggers();
+		}
 	}
 }
