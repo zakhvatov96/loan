@@ -41,8 +41,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
 	feedSlider.init();
 
-	const playVideo = new PlayVideo('.showup .play', '.overlay');
-	playVideo.init();
+	new PlayVideo('.showup .play', '.overlay').init();
+	new PlayVideo('.module__video-item .play', '.overlay').init();
 
 	new Difference('.officerold', '.officernew', '.officer__card-item').init();
 	new Form('.form').init();
